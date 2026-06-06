@@ -1,4 +1,7 @@
-
-
-#Ignore vscode AI rules
-.github\instructions\codacy.instructions.md
+node_modules
+dist
+.env
+.env.local
+.env.*.local
+.DS_Store
+Thumbs.db
