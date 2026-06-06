@@ -29,7 +29,7 @@ function Register() {
       [name]: value
     }));
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!agreeTerms) {
