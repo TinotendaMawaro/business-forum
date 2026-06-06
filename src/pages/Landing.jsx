@@ -1,11 +1,45 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Store, TrendingUp, Award, Zap, Globe } from 'lucide-react';
-import { mockProducts, mockEvents } from '../data/mockData';
+import { mockProducts, mockAdvertisements } from '../data/mockData';
 import meeting from '../assets/images/meeting.avif';
 import supplierImg from '../assets/images/supplier.jpg';
 import truckImg from '../assets/images/truck.jpg';
 import marketImg from '../assets/images/market.jpg';
+
+function LogoCloud() {
+  const partners = [
+    { name: 'EcoCash', initials: 'EC' },
+    { name: 'ZimPost', initials: 'ZP' },
+    { name: 'CBZ Bank', initials: 'CB' },
+    { name: 'First Capital', initials: 'FC' },
+    { name: 'NetOne', initials: 'N1' },
+    { name: 'POSB', initials: 'PB' },
+  ];
+
+  return (
+    <section className="py-16 bg-white border-y border-gray-100" data-aos="fade-up">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-bold text-gray-900">Trusted Partners & Sponsors</h2>
+            <p className="mt-2 text-gray-600">Proudly supported by leading organizations across Zimbabwe</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {partners.map((partner) => (
+              <div key={partner.name} data-aos="fade-up" data-aos-delay={100}>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 border border-gray-200 flex items-center justify-center hover:shadow-lg hover:border-red-200 hover:-translate-y-1 transition-all duration-300">
+                    <span className="text-sm font-bold text-gray-700">{partner.initials}</span>
+                  </div>
+                  <span className="text-xs text-gray-600 font-medium">{partner.name}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+  );
+}
 
 function Landing() {
   return (
@@ -27,8 +61,6 @@ function Landing() {
               <Link to="/" className="text-gray-700 hover:text-red-700 font-medium">Home</Link>
               <Link to="/about" className="text-gray-700 hover:text-red-700 font-medium">About</Link>
               <Link to="/products" className="text-gray-700 hover:text-red-700 font-medium">Products</Link>
-              <Link to="/events" className="text-gray-700 hover:text-red-700 font-medium">Events</Link>
-              <Link to="/blog" className="text-gray-700 hover:text-red-700 font-medium">Blog</Link>
               <Link to="/contact" className="text-gray-700 hover:text-red-700 font-medium">Contact</Link>
             </div>
 
@@ -44,10 +76,10 @@ function Landing() {
         </div>
       </nav>
 
-      <section className="relative overflow-hidden bg-gradient-to-br from-red-950 via-red-800 to-red-600 min-h-[92vh] md:min-h-[88vh] lg:min-h-[95vh] flex items-center pb-40 md:pb-0">
+      <section className="relative overflow-hidden bg-gradient-to-br from-red-950 via-red-800 to-red-600 min-h-[92vh] md:min-h-[88vh] lg:min-h-[95vh] flex items-center pb-40 md:pb-0" data-aos="fade-in">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl" />
           <div className="absolute inset-0 opacity-10">
             <div className="w-full h-full bg-[radial-gradient(circle,white_1px,transparent_1px)] bg-[length:25px_25px]" />
           </div>
@@ -86,10 +118,7 @@ function Landing() {
             <div className="relative hidden lg:block">
               <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[520px] md:h-[520px] lg:w-[620px] lg:h-[620px] mx-auto">
                 <div className="absolute inset-0 rounded-full" style={{overflow: 'hidden'}}>
-                  <div
-                    className="w-full h-full animate-spin"
-                    style={{animationDuration: '8s'}}
-                  >
+                  <div className="w-full h-full animate-spin" style={{animationDuration: '8s'}}>
                     <div
                       className="w-full h-full rounded-full"
                       style={{
@@ -118,7 +147,7 @@ function Landing() {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 text-white">
                     <path d="M9 11a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
                     <path d="M19 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9l3.5-3.5A2.121 2.121 0 0 1 9 7h6a2 2 0 0 1 1.5.5L21 9v6a2 2 0 0 1-2 2h-3" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9l3.5-3.5A2.121 2.121 0 0 1 9 7h6a2 0 0 1 1.5.5L21 9v6a2 0 0 1-2 2h-3" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 11l3.5-3.5A2.121 2.121 0 0 0 18.5 7h-9.5A2.121 2.121 0 0 0 7 9.5L3.5 13" />
                   </svg>
                 </div>
@@ -143,44 +172,81 @@ function Landing() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white" data-aos="fade-up">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12">Upcoming Events</h2>
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            {mockEvents.slice(0, 2).map((event) => (
-              <div key={event.id} className="bg-white rounded-xl shadow-sm p-8 hover:shadow-lg transition">
-                <div className="flex gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-20 h-20 bg-red-100 rounded-lg flex flex-col items-center justify-center">
-                      <div className="text-2xl font-bold text-red-700">
-                        {new Date(event.date).getDate()}
-                      </div>
-                      <div className="text-xs text-red-700 uppercase font-bold">
-                        {new Date(event.date).toLocaleDateString('en-US', { month: 'short' })}
-                      </div>
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">Featured Products</h2>
+              <p className="mt-2 text-gray-600">Top picks from our marketplace this week</p>
+            </div>
+            <Link to="/products" className="hidden sm:inline-flex items-center gap-2 text-red-700 font-semibold hover:text-red-800">
+              View all <ArrowRight size={18} />
+            </Link>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mockProducts.slice(0, 3).map((product, index) => (
+              <div key={product.id} data-aos="fade-up" data-aos-delay={index * 100} className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                <div className="h-48 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center text-6xl">
+                  {product.image}
+                </div>
+                <div className="p-6">
+                  <div className="text-xs font-bold text-red-700 uppercase tracking-wider mb-2">{product.category}</div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-700 transition-colors">{product.name}</h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-2xl font-black text-gray-900">${product.price}</span>
+                      {product.priceUnit && <span className="text-xs text-gray-500 ml-1">{product.priceUnit}</span>}
                     </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm text-red-700 font-bold mb-1">{event.type}</div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{event.description}</p>
-                    <div className="text-sm text-gray-500">
-                      {event.time} · {event.location}
-                    </div>
+                    <span className="text-sm text-gray-500">{product.location}</span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="text-center">
-            <Link to="/events" className="px-8 py-3 bg-red-700 text-white rounded-lg font-bold hover:bg-red-800 inline-flex items-center gap-2">
-              View All Events <ArrowRight size={20} />
+          <div className="mt-8 text-center sm:hidden">
+            <Link to="/products" className="inline-flex items-center gap-2 px-6 py-3 bg-red-700 text-white rounded-lg font-bold hover:bg-red-800">
+              View all products <ArrowRight size={18} />
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="bg-red-700 text-white py-20">
+      <section className="py-20 bg-gray-50" data-aos="fade-up" data-aos-delay="100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">Sponsored</h2>
+              <p className="mt-2 text-gray-600">Exclusive offers and promotions from our partners</p>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {mockAdvertisements.slice(0, 3).map((ad, index) => (
+              <div key={ad.id} data-aos="zoom-in" data-aos-delay={index * 100} className="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-red-100 transition-all duration-300 p-6">
+                <div className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
+                  {ad.type.replace(/_/g, ' ')}
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-red-700 text-white flex items-center justify-center text-xl mb-4 shadow-lg shadow-red-200">
+                  {ad.icon}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-red-700 transition-colors">{ad.title}</h3>
+                <p className="text-gray-600 text-sm mb-4">Booked by <span className="font-semibold text-gray-900">{ad.bookedBy}</span></p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-2xl font-black text-gray-900">${ad.price}</span>
+                    <span className="text-xs text-gray-500 ml-1">{ad.period}</span>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${ad.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{ad.status}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <LogoCloud />
+
+      <section className="bg-red-700 text-white py-20" data-aos="fade-up" data-aos-delay="100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
           <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
