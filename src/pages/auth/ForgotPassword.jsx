@@ -12,7 +12,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 page-enter">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <div className="flex items-center justify-center mb-6">
           <Key className="w-8 h-8 text-red-700 mr-2" />

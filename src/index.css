@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-50 text-gray-900;
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased selection:bg-red-500/30;
+  }
+}
+
+@layer components {
+  .page-enter {
+    animation: pageEnter 420ms ease-out both;
+  }
+
+  .fade-up-enter {
+    animation: fadeUpEnter 520ms ease-out both;
+  }
+
+  .stagger-1 { animation-delay: 60ms; }
+  .stagger-2 { animation-delay: 120ms; }
+  .stagger-3 { animation-delay: 180ms; }
+  .stagger-4 { animation-delay: 240ms; }
+  .stagger-5 { animation-delay: 300ms; }
+  .stagger-6 { animation-delay: 360ms; }
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(12px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeUpEnter {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -3,6 +3,16 @@ import { Link } from 'react-router-dom';
 import { mockQuotations as initialQuotations, mockProducts, mockCategories } from '../../data/mockData';
 import { MessageSquare } from 'lucide-react';
 
+const inputBase = 'w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500';
+const selectBase = 'rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500';
+
+function statusBadge(status) {
+  if (status === 'pending') return <span className="inline-flex rounded-full bg-yellow-50 px-3 py-1 text-xs font-bold text-yellow-700">Pending</span>;
+  if (status === 'accepted') return <span className="inline-flex rounded-full bg-green-50 px-3 py-1 text-xs font-bold text-green-700">Accepted</span>;
+  if (status === 'rejected') return <span className="inline-flex rounded-full bg-red-50 px-3 py-1 text-xs font-bold text-red-700">Rejected</span>;
+  return <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">{status}</span>;
+}
+
 function Quotations() {
   const [quotationList, setQuotationList] = useState(() => {
     try {
@@ -51,66 +61,60 @@ function Quotations() {
     alert('RFQ submitted successfully');
   };
 
-  const statusBadge = (status) => {
-    if (status === 'pending') return <span className="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">Pending</span>;
-    if (status === 'accepted') return <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">Accepted</span>;
-    if (status === 'rejected') return <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">Rejected</span>;
-    return <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-800">{status}</span>;
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-start gap-6 mb-8">
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 page-enter">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Request for Quotation (RFQ)</h1>
-            <p className="text-gray-600">Request, track, and manage quotations from suppliers.</p>
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900">Request for Quotation</h1>
+            <p className="mt-1 text-slate-500">Request, track, and manage quotations from suppliers</p>
           </div>
-          <button onClick={() => setShowCreate((prev) => !prev)} className="px-6 py-2 bg-red-700 text-white rounded-lg font-bold hover:bg-red-800">
+          <button onClick={() => setShowCreate((prev) => !prev)} className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">
             + New RFQ
           </button>
         </div>
 
         {showCreate && (
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 mb-8 space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-1">Product / Service</label>
-                <input type="text" name="product" value={form.product} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" placeholder="e.g. 2 tonnes of maize" />
+                <label className="mb-2 block text-sm font-semibold text-slate-900">Product / Service</label>
+                <input type="text" name="product" value={form.product} onChange={handleChange} required className={inputBase} placeholder="e.g. 2 tonnes of maize" />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-1">Category</label>
-                <select name="category" value={form.category} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-900">Category</label>
+                <select name="category" value={form.category} onChange={handleChange} required className={inputBase}>
                   <option value="">Select category</option>
-                  {mockCategories.map((cat) => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
+                  {mockCategories.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-1">Budget (USD)</label>
-                <input type="number" name="budget" value={form.budget} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" placeholder="0" />
+                <label className="mb-2 block text-sm font-semibold text-slate-900">Budget (USD)</label>
+                <input type="number" name="budget" value={form.budget} onChange={handleChange} required className={inputBase} placeholder="0" />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-1">Deadline</label>
-                <input type="date" name="deadline" value={form.deadline} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" />
+                <label className="mb-2 block text-sm font-semibold text-slate-900">Deadline</label>
+                <input type="date" name="deadline" value={form.deadline} onChange={handleChange} required className={inputBase} />
               </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-gray-900 mb-1">Message / Requirements</label>
-                <textarea name="message" value={form.message} onChange={handleChange} rows="3" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" placeholder="Describe what you need..." />
+              <div className="sm:col-span-2">
+                <label className="mb-2 block text-sm font-semibold text-slate-900">Message / Requirements</label>
+                <textarea name="message" value={form.message} onChange={handleChange} rows={3} className={`${inputBase} resize-none`} placeholder="Describe what you need..." />
               </div>
             </div>
-            <div className="flex justify-end gap-2">
-              <button type="button" onClick={() => setShowCreate(false)} className="px-4 py-2 border border-gray-300 rounded-lg font-bold text-gray-700 hover:bg-gray-50">Cancel</button>
-              <button type="submit" className="px-4 py-2 bg-red-700 text-white rounded-lg font-bold hover:bg-red-800">Submit RFQ</button>
+            <div className="mt-6 flex justify-end gap-3">
+              <button type="button" onClick={() => setShowCreate(false)} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Cancel</button>
+              <button type="submit" className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">Submit RFQ</button>
             </div>
           </form>
         )}
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-            <h2 className="text-lg font-bold text-gray-900">Recent Quotations</h2>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700">
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-between p-6">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">Recent Quotations</h2>
+              <p className="text-sm text-slate-500">Track your RFQ activity</p>
+            </div>
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className={selectBase}>
               <option value="all">All statuses</option>
               <option value="pending">Pending</option>
               <option value="accepted">Accepted</option>
@@ -120,27 +124,29 @@ function Quotations() {
 
           {displayed.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 border-b">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Product</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Category</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Budget</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Status</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Deadline</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Action</th>
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200 text-xs uppercase tracking-widest text-slate-500">
+                    <th className="px-6 py-3 font-semibold">Product</th>
+                    <th className="px-6 py-3 font-semibold">Category</th>
+                    <th className="px-6 py-3 font-semibold">Budget</th>
+                    <th className="px-6 py-3 font-semibold">Status</th>
+                    <th className="px-6 py-3 font-semibold">Deadline</th>
+                    <th className="px-6 py-3 font-semibold">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-slate-100">
                   {displayed.map((quote) => (
-                    <tr key={quote.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 font-medium text-gray-900">{quote.product}</td>
-                      <td className="px-4 py-3 text-gray-600">{quote.supplier}</td>
-                      <td className="px-4 py-3 text-gray-700">${quote.budget}</td>
-                      <td className="px-4 py-3">{statusBadge(quote.status)}</td>
-                      <td className="px-4 py-3 text-gray-600">{quote.deadline || quote.date}</td>
-                      <td className="px-4 py-3 text-red-700 font-medium cursor-pointer">
-                        <button className="inline-flex items-center gap-1"><MessageSquare size={16} /> View</button>
+                    <tr key={quote.id} className="transition hover:bg-slate-50">
+                      <td className="px-6 py-3 font-semibold text-slate-900">{quote.product}</td>
+                      <td className="px-6 py-3 text-slate-600">{quote.supplier}</td>
+                      <td className="px-6 py-3 text-slate-700">${quote.budget}</td>
+                      <td className="px-6 py-3">{statusBadge(quote.status)}</td>
+                      <td className="px-6 py-3 text-slate-600">{quote.deadline || quote.date}</td>
+                      <td className="px-6 py-3">
+                        <button className="inline-flex items-center gap-2 text-sm font-semibold text-red-700 transition hover:text-red-800">
+                          <MessageSquare size={16} /> View
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -148,10 +154,10 @@ function Quotations() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-10 text-gray-600">
-              <div className="text-5xl mb-3">📭</div>
-              <div className="font-semibold text-gray-900 mb-1">No quotations yet.</div>
-              <div>Start by creating a new request.</div>
+            <div className="px-6 py-14 text-center">
+              <div className="text-5xl">📭</div>
+              <div className="mt-3 text-base font-semibold text-slate-900">No quotations yet</div>
+              <div className="mt-1 text-sm text-slate-500">Start by creating a new request.</div>
             </div>
           )}
         </div>
@@ -161,3 +167,4 @@ function Quotations() {
 }
 
 export default Quotations;
+

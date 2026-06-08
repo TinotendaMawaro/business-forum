@@ -1,11 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import useAuthStore from './store/authStore';
 
 // Layouts
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import AdminLayout, { AdminDashboard, AdminMembers, AdminListings, AdminAdvertisements, AdminReports } from './pages/admin/Dashboard';
+import AdminLayout from './pages/admin/Dashboard';
+import { AdminDashboard, AdminMembers, AdminListings, AdminAdvertisements, AdminReports } from './pages/admin/Dashboard';
 import Landing from './pages/Landing';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -27,8 +28,10 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white text-slate-900 selection:bg-red-500/30">
         {isAuthenticated && user?.role !== 'admin' && <Navbar user={user} onLogout={logout} />}
+
+        <ScrollToTop />
 
         <Routes>
           {/* Public Routes */}
@@ -40,19 +43,19 @@ function App() {
           <Route path="/contact" element={<Contact />} />
 
           {/* Auth Routes */}
-          <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />} />
-          <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />} />
+          <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to={user?.role === 'admin' ? '/admin/dashboard' : '/dashboard'} />} />
+          <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to={user?.role === 'admin' ? '/admin/dashboard' : '/dashboard'} />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* Member Routes */}
           <Route element={isAuthenticated ? <Outlet /> : <Navigate to="/login" />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/suppliers" element={<SupplierDirectory />} />
-            <Route path="/my-listings" element={<MyListings />} />
-            <Route path="/quotations" element={<Quotations />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/forum" element={<DiscussionForum />} />
+            <Route path="/dashboard" element={user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : <Dashboard />} />
+            <Route path="/marketplace" element={user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : <Marketplace />} />
+            <Route path="/suppliers" element={user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : <SupplierDirectory />} />
+            <Route path="/my-listings" element={user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : <MyListings />} />
+            <Route path="/quotations" element={user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : <Quotations />} />
+            <Route path="/profile" element={user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : <Profile />} />
+            <Route path="/forum" element={user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : <DiscussionForum />} />
           </Route>
 
           {/* Admin Routes */}
@@ -72,6 +75,16 @@ function App() {
       </div>
     </Router>
   );
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+
+  return null;
 }
 
 export default App;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useAuthStore from '../../store/authStore';
-import { Mail, Phone, MapPin, Edit3, Save } from 'lucide-react';
+import { Mail, Phone, MapPin, Edit3, Save, Shield } from 'lucide-react';
 
 function Profile() {
   const { user, updateProfile } = useAuthStore();
@@ -15,7 +15,7 @@ function Profile() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -25,101 +25,94 @@ function Profile() {
     alert('Profile updated successfully!');
   };
 
+  const inputBase =
+    'w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500';
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">My Profile</h1>
-        
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Sidebar */}
-          <div className="bg-white rounded-lg shadow p-6 h-fit">
-            <div className="w-24 h-24 bg-red-100 text-red-700 rounded-lg flex items-center justify-center font-bold text-3xl mx-auto mb-4">
-              {user?.avatar}
-            </div>
-            <h2 className="text-xl font-bold text-gray-900 text-center mb-2">{user?.name}</h2>
-            <div className="text-sm text-gray-600 text-center mb-4">{user?.category}</div>
-            <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-center text-sm font-bold capitalize">
-              {user?.status} Member
-            </div>
-            <div className="text-xs text-gray-500 text-center mt-2">
-              Reg No: {user?.registrationNo}
-            </div>
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 page-enter">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">My Profile</h1>
+        <p className="mt-1 text-slate-500">Manage your account information and preferences</p>
+
+        <div className="mt-8 grid gap-8 md:grid-cols-3">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-2xl bg-red-50 text-3xl font-bold text-red-700">{user?.avatar}</div>
+            <h2 className="mt-4 text-center text-xl font-bold text-slate-900">{user?.name}</h2>
+            <div className="mt-1 text-center text-sm text-slate-500">{user?.category}</div>
+            <div className="mx-auto mt-4 w-fit rounded-full bg-green-50 px-4 py-1.5 text-center text-xs font-bold text-green-700 capitalize">{user?.status} Member</div>
+            <div className="mt-2 text-center text-xs text-slate-400">Reg No: {user?.registrationNo}</div>
           </div>
 
-          {/* Main Content */}
           <div className="md:col-span-2 space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-gray-900">Profile Information</h3>
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Profile Information</h2>
+                  <p className="text-sm text-slate-500">Update your personal and business details</p>
+                </div>
                 {!isEditing && (
-                  <button onClick={() => setIsEditing(true)} className="text-red-700 hover:text-red-800 flex items-center gap-2">
-                    <Edit3 size={18} /> Edit
+                  <button onClick={() => setIsEditing(true)} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
+                    <Edit3 size={16} /> Edit Profile
                   </button>
                 )}
               </div>
-              
+
               {isEditing ? (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Full Name</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Email</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Phone</label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Location</label>
-                    <input type="text" name="location" value={formData.location} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-red-700" />
+                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-slate-900">Full Name</label>
+                      <input type="text" name="name" value={formData.name} onChange={handleChange} className={inputBase} />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-slate-900">Email</label>
+                      <input type="email" name="email" value={formData.email} onChange={handleChange} className={inputBase} />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-slate-900">Phone</label>
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className={inputBase} />
+                    </div>
+                    <div>
+                      <label className="mb-2 block text-sm font-semibold text-slate-900">Location</label>
+                      <input type="text" name="location" value={formData.location} onChange={handleChange} className={inputBase} />
+                    </div>
                   </div>
                   <div className="flex gap-3">
-                    <button type="submit" className="px-6 py-2 bg-red-700 text-white rounded-lg font-bold hover:bg-red-800 flex items-center gap-2">
-                      <Save size={18} /> Save
+                    <button type="submit" className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800">
+                      <Save size={16} /> Save Changes
                     </button>
-                    <button type="button" onClick={() => setIsEditing(false)} className="px-6 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-bold hover:bg-gray-50">
-                      Cancel
-                    </button>
+                    <button type="button" onClick={() => setIsEditing(false)} className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">Cancel</button>
                   </div>
                 </form>
               ) : (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Email</label>
-                    <p className="text-gray-600">{user?.email}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Registration No.</label>
-                    <p className="text-gray-600">{user?.registrationNo}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Member Since</label>
-                    <p className="text-gray-600">{user?.joinDate}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Business Category</label>
-                    <p className="text-gray-600">{user?.category}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Phone</label>
-                    <p className="text-gray-600">{user?.phone || 'Not provided'}</p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-1">Location</label>
-                    <p className="text-gray-600">{user?.location || 'Not provided'}</p>
-                  </div>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {[
+                    { label: 'Email', value: user?.email },
+                    { label: 'Registration No.', value: user?.registrationNo },
+                    { label: 'Member Since', value: user?.joinDate },
+                    { label: 'Business Category', value: user?.category },
+                    { label: 'Phone', value: user?.phone || 'Not provided' },
+                    { label: 'Location', value: user?.location || 'Not provided' },
+                  ].map((field) => (
+                    <div key={field.label} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="text-xs font-semibold uppercase tracking-widest text-slate-500">{field.label}</div>
+                      <div className="mt-1 text-sm font-semibold text-slate-900">{field.value}</div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Account Security</h3>
-              <button className="px-6 py-2 border-2 border-red-700 text-red-700 rounded-lg font-bold hover:bg-red-50">
-                Change Password
-              </button>
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">Account Security</h2>
+                  <p className="text-sm text-slate-500">Password and authentication settings</p>
+                </div>
+                <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
+                  <Shield size={16} /> Change Password
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -129,4 +122,3 @@ function Profile() {
 }
 
 export default Profile;
-

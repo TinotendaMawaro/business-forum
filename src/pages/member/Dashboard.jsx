@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
-import { mockMembers, mockProducts, mockQuotations, mockTransactions } from '../../data/mockData';
+import { mockProducts, mockQuotations, mockTransactions } from '../../data/mockData';
 import {
-  BarChart3,
   TrendingUp,
   ShoppingCart,
   DollarSign,
@@ -20,8 +19,12 @@ function Dashboard() {
   const { user } = useAuthStore();
 
   const stats = useMemo(() => {
-    const purchases = mockTransactions.filter((txn) => txn.member === user?.name).reduce((sum, txn) => sum + txn.amount, 0);
-    const sales = mockTransactions.filter((txn) => txn.type === 'sale' && txn.member === user?.name).reduce((sum, txn) => sum + txn.amount, 0);
+    const purchases = mockTransactions
+      .filter((txn) => txn.member === user?.name)
+      .reduce((sum, txn) => sum + txn.amount, 0);
+    const sales = mockTransactions
+      .filter((txn) => txn.type === 'sale' && txn.member === user?.name)
+      .reduce((sum, txn) => sum + txn.amount, 0);
     return [
       { label: 'Total Purchases', value: `$${purchases.toLocaleString()}`, icon: ShoppingCart, color: 'text-blue-600', bg: 'bg-blue-50' },
       { label: 'Total Sales', value: `$${sales.toLocaleString()}`, icon: DollarSign, color: 'text-green-600', bg: 'bg-green-50' },
@@ -41,181 +44,207 @@ function Dashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 page-enter">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user?.name}! 👋</h1>
-            <p className="text-gray-600">
-              {user?.role === 'admin' ? 'Administrator' : 'Member'} since {user?.joinDate || '2024'} • {user?.category || 'General'}
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+              Welcome back, {user?.name}
+            </h1>
+            <p className="mt-1 text-slate-500">
+              {user?.role === 'admin' ? 'Administrator' : 'Member'} since {user?.joinDate || '2024'} •{' '}
+              {user?.category || 'General'}
             </p>
           </div>
-          <div className="flex gap-3 w-full md:w-auto">
+          <div className="flex w-full gap-3 md:w-auto">
             <Link
               to="/marketplace"
-              className="flex-1 md:flex-none px-6 py-2 bg-red-700 text-white rounded-lg font-bold hover:bg-red-800 transition flex items-center justify-center gap-2"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
             >
-              <Plus size={18} /> Browse Marketplace
+              <Plus size={16} /> Browse Marketplace
             </Link>
             <Link
               to="/quotations"
-              className="flex-1 md:flex-none px-6 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-bold hover:bg-gray-50 transition"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >
-              <span className="inline-flex items-center gap-2"><FileText size={18} /> New RFQ</span>
+              <FileText size={16} /> New RFQ
             </Link>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-red-700 to-red-800 text-white rounded-xl p-6 mb-8 shadow-lg">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="text-sm opacity-90 mb-1">Account Status</div>
-              <div className="text-2xl font-bold capitalize">{user?.status || 'Active'}</div>
+        <div className="mt-8 flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+              Account Status
             </div>
-            <div className="text-4xl opacity-20">🎯</div>
+            <div className="mt-1 text-2xl font-bold text-slate-900 capitalize">{user?.status || 'Active'}</div>
           </div>
-          {(user?.status === 'pending' || user?.role === 'admin') && (
-            <p className="mt-4 text-sm text-red-100">
-              {user?.role === 'admin' ? 'Admin account has full platform management access.' : 'Your registration is under review. You will be notified once approved by an administrator.'}
-            </p>
-          )}
+          <div className="hidden h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 md:flex">
+            <Store size={20} />
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (
-              <div key={i} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`${stat.color}`}>
-                    <Icon size={28} />
+              <div
+                key={i}
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-xl"
+              >
+                <div className="flex items-center justify-between">
+                  <div className={`rounded-xl p-3 ${stat.bg}`}>
+                    <Icon size={22} className={stat.color} />
                   </div>
-                  <div className="text-sm text-gray-500">
-                    <TrendingUp size={16} className="text-green-600" />
-                  </div>
+                  <span className="text-xs font-semibold text-green-600">+12%</span>
                 </div>
-                <div className="text-gray-600 text-sm font-medium mb-1">{stat.label}</div>
-                <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                <div className="mt-5 text-sm font-medium text-slate-500">{stat.label}</div>
+                <div className="mt-1 text-2xl font-bold text-slate-900">{stat.value}</div>
               </div>
             );
           })}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8 mb-8">
-          <div className="lg:col-span-2 bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
-            <div className="flex items-center justify-between mb-6">
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-bold text-gray-900">Sales by Quarter</h2>
-                <p className="text-sm text-gray-600">2024 Performance</p>
+                <h2 className="text-lg font-bold text-slate-900">Sales by Quarter</h2>
+                <p className="text-sm text-slate-500">2024 Performance</p>
               </div>
-              <Link to="#" className="text-red-700 hover:text-red-800 font-medium text-sm flex items-center gap-2">
+              <Link
+                to="#"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-red-700 transition hover:text-red-800"
+              >
                 <Download size={16} /> Export
               </Link>
             </div>
-            <div className="space-y-4">
+
+            <div className="mt-6 space-y-4">
               {quarterlyData.map((item, i) => (
                 <div key={i}>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-gray-900">{item.quarter}</span>
-                    <span className="text-sm font-bold text-gray-900">${item.sales}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-slate-900">{item.quarter}</span>
+                    <span className="text-sm font-bold text-slate-900">${item.sales}</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                    <div className="bg-red-700 h-full rounded-full transition-all duration-500" style={{ width: `${item.percentage}%` }} />
+                  <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                    <div
+                      className="h-full rounded-full bg-slate-900 transition-all duration-500"
+                      style={{ width: `${item.percentage}%` }}
+                    />
                   </div>
                 </div>
               ))}
             </div>
-            <div className="mt-6 pt-6 border-t flex justify-between">
+
+            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
               <div>
-                <div className="text-sm text-gray-600">Total 2024 Sales</div>
-                <div className="text-2xl font-bold text-gray-900">$1,940</div>
+                <div className="text-sm text-slate-500">Total 2024 Sales</div>
+                <div className="text-2xl font-bold text-slate-900">$1,940</div>
               </div>
               <div className="text-right">
-                <div className="text-sm text-gray-600">Avg. Quarterly</div>
+                <div className="text-sm text-slate-500">Avg. Quarterly</div>
                 <div className="text-2xl font-bold text-green-600">↑ 35%</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">Quick Actions</h2>
-            <div className="space-y-3">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900">Quick Actions</h2>
+            <div className="mt-4 space-y-3">
               <Link
                 to="/marketplace"
-                className="block px-4 py-3 bg-red-50 text-red-700 rounded-lg font-medium hover:bg-red-100 transition text-center"
+                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100"
               >
-                📦 Browse Products
+                <ShoppingCart size={18} />
+                Browse Products
               </Link>
               <Link
                 to="/suppliers"
-                className="block px-4 py-3 bg-blue-50 text-blue-700 rounded-lg font-medium hover:bg-blue-100 transition text-center"
+                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100"
               >
-                👥 Find Suppliers
+                <Store size={18} />
+                Find Suppliers
               </Link>
               <Link
                 to="/my-listings"
-                className="block px-4 py-3 bg-purple-50 text-purple-700 rounded-lg font-medium hover:bg-purple-100 transition text-center"
+                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100"
               >
-                📝 My Listings
+                <Package size={18} />
+                My Listings
               </Link>
               <Link
                 to="/forum"
-                className="block px-4 py-3 bg-green-50 text-green-700 rounded-lg font-medium hover:bg-green-100 transition text-center flex items-center justify-center gap-2"
+                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100"
               >
-                <MessageSquare size={18} /> Discussion Forum
+                <MessageSquare size={18} />
+                Discussion Forum
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold text-gray-900">Recent Quotations</h2>
-            <Link to="/quotations" className="text-red-700 hover:text-red-800 font-medium text-sm">
+        <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">Recent Quotations</h2>
+              <p className="text-sm text-slate-500">Latest RFQ activity across suppliers</p>
+            </div>
+            <Link
+              to="/quotations"
+              className="text-sm font-semibold text-red-700 transition hover:text-red-800"
+            >
               View All →
             </Link>
           </div>
-          {mockQuotations.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 border-b">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Product</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Supplier</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Status</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Date</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Action</th>
+
+          {mockQuotations.length === 0 ? (
+            <div className="mt-10 text-center text-slate-500">
+              No quotations yet.{' '}
+              <Link to="/quotations" className="font-semibold text-red-700 hover:text-red-800">
+                Request one →
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-6 overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200 text-xs uppercase tracking-widest text-slate-500">
+                    <th className="px-4 py-3 font-semibold">Product</th>
+                    <th className="px-4 py-3 font-semibold">Supplier</th>
+                    <th className="px-4 py-3 font-semibold">Status</th>
+                    <th className="px-4 py-3 font-semibold">Date</th>
+                    <th className="px-4 py-3 font-semibold">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
+                <tbody className="divide-y divide-slate-100">
                   {mockQuotations.slice(0, 5).map((quote) => (
-                    <tr key={quote.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 font-medium text-gray-900">{quote.product}</td>
-                      <td className="px-4 py-3 text-gray-600">{quote.supplier}</td>
+                    <tr key={quote.id} className="transition hover:bg-slate-50">
+                      <td className="px-4 py-3 font-medium text-slate-900">{quote.product}</td>
+                      <td className="px-4 py-3 text-slate-600">{quote.supplier}</td>
                       <td className="px-4 py-3">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            quote.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : quote.status === 'accepted' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${
+                            quote.status === 'pending'
+                              ? 'bg-yellow-50 text-yellow-700'
+                              : quote.status === 'accepted'
+                                ? 'bg-green-50 text-green-700'
+                                : 'bg-red-50 text-red-700'
                           }`}
                         >
                           {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-gray-600">{quote.date}</td>
+                      <td className="px-4 py-3 text-slate-600">{quote.date}</td>
                       <td className="px-4 py-3">
-                        <button className="text-red-700 hover:text-red-800 font-medium text-sm">View</button>
+                        <button className="font-semibold text-red-700 transition hover:text-red-800">
+                          View
+                        </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          ) : (
-            <div className="text-center py-8 text-gray-600">
-              No quotations yet.{' '}
-              <Link to="/quotations" className="text-red-700 font-bold hover:underline">
-                Request one →
-              </Link>
             </div>
           )}
         </div>
